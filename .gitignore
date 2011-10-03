@@ -1,0 +1,17 @@
+lt application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated GUI files
+*R.java //this might exclude files like "ActionBar.java" or "TimeSlider.java"
+
+#projects related
+
+*.classpath
+*.project
