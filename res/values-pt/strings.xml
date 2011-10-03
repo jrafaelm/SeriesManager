@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="app_name">Gerenciador De Séries</string>
+    <string name="series_title">Título</string>
+    <string name="credits">Essa applicação foi feita por José Rafael Moraes</string>
+    <string name="press_menu">Pressione Menu para adicionar novas, ou escolha uma série para gerenciar.</string>
+    <string name="insert_title">Insira o título da nova série.</string>
+    <string name="episode">Episódio</string>
+    <string name="season">Temporada</string>
+</resources>

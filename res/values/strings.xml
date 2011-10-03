@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="app_name">Series Manager</string>
+    <string name="series_title">Title</string>
+    <string name="credits">This app was developed by José Rafael Moraes</string>
+    <string name="press_menu">Press Menu to Add new , or click on a serie to manage it.</string>
+    <string name="insert_title">Insert the title of the new serie.</string>
+    <string name="episode">Episode</string>
+    <string name="season">Season</string>
+</resources>
