@@ -7,4 +7,5 @@
     <string name="insert_title">Insert the title of the new serie.</string>
     <string name="episode">Episode</string>
     <string name="season">Season</string>
+    <string name="series">Series</string>
 </resources>

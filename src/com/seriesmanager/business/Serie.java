@@ -37,6 +37,8 @@ public class Serie implements Serializable{
 	}
 
 	public Serie() {
+		season = Integer.valueOf(0);
+		episode = Integer.valueOf(0);
 	}
 
 	

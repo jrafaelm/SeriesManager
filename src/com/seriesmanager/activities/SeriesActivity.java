@@ -66,7 +66,6 @@ public class SeriesActivity extends Activity {
 
 		lvSeries = (ListView) findViewById(R.id.lvSeries);
 		lvSeries.setOnItemClickListener(ocl);
-		Toast.makeText(this, this.getResources().getString(R.string.press_menu), Toast.LENGTH_LONG).show();
 	}
 	
 	/**
@@ -81,37 +80,8 @@ public class SeriesActivity extends Activity {
 		listSeries();
 }	
 	
-	/**
-     * Method to create options menu. 
-     *  */
-    @Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		super.onCreateOptionsMenu(menu);
-		
-		MenuItem itemAdd = menu.add(0, MENU_ADD, 0, null);
-		itemAdd.setIcon(R.drawable.add);
-
-		return true;
-	}
-    /**
-     * Method to handle menu on item click events. 
-     *  */
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		// TODO Auto-generated method stub
-		super.onMenuItemSelected(featureId, item);
-		switch (item.getItemId()) {
-		case MENU_ADD:
-			menuItemAddSerie();
-			return true;
-		}
-		return false;
-	}
 	
-	private void menuItemAddSerie(){
-		callDialog();
-	}
+	
 	
 	/**
 	 * Method to list series into the listview
@@ -124,29 +94,11 @@ public class SeriesActivity extends Activity {
 		lvSeries.setAdapter(adp);
 		adp.notifyDataSetChanged();
 	}
-	/**
-     * Method to show a dialog to insert new series. 
-     *  */
-	private void callDialog(){
-		alert = new AlertDialog.Builder(this);
-		input = new EditText(this);
-		input.setHint(this.getResources().getString(R.string.insert_title));
-		alert.setView(input);
-		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				addSerie(input.getText().toString().trim());
-				
-			}
-			
-		});
-		alert.setNegativeButton("Cancel", null);
-		alert.show();
-	}
 	
-	private void addSerie(String name){
-		Serie serie = new Serie(name, 0, 0);
-		PSerie persistence= new PSerie(this);
-		persistence.addSerie(serie);
-		listSeries();
+	
+	public void addSerie(View v){
+		Intent i = new Intent(ctx, SeriesDetailActivity.class);
+		i.putExtra("serie", new Serie());
+		startActivity(i);
 	}
 }

@@ -11,17 +11,31 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int add=0x7f020000;
-        public static final int icon=0x7f020001;
-        public static final int series=0x7f020002;
-        public static final int start=0x7f020003;
+        public static final int add_btn=0x7f020000;
+        public static final int btn_add=0x7f020001;
+        public static final int btn_add_clicked=0x7f020002;
+        public static final int btn_trash=0x7f020003;
+        public static final int btn_trash_clicked=0x7f020004;
+        public static final int icon=0x7f020005;
+        public static final int series=0x7f020006;
+        public static final int start=0x7f020007;
+        public static final int trash=0x7f020008;
+        public static final int trash_btn=0x7f020009;
+        public static final int trash_clicked=0x7f02000a;
     }
     public static final class id {
-        public static final int editText1=0x7f050000;
-        public static final int linearLayout1=0x7f050001;
-        public static final int lvSeries=0x7f050004;
-        public static final int rootLayout=0x7f050003;
-        public static final int tvSeason=0x7f050002;
+        public static final int btnAdd=0x7f05000a;
+        public static final int btnMinusEpisode=0x7f050005;
+        public static final int btnMinusSeason=0x7f050002;
+        public static final int btnPlusEpisode=0x7f050007;
+        public static final int btnPlusSeason=0x7f050004;
+        public static final int btnTrash=0x7f050008;
+        public static final int etEpisode=0x7f050006;
+        public static final int etSeason=0x7f050003;
+        public static final int etTitle=0x7f050000;
+        public static final int lvSeries=0x7f05000b;
+        public static final int rootLayout=0x7f050009;
+        public static final int tvSeason=0x7f050001;
     }
     public static final class layout {
         public static final int main=0x7f030000;
@@ -35,6 +49,7 @@ public final class R {
         public static final int insert_title=0x7f040004;
         public static final int press_menu=0x7f040003;
         public static final int season=0x7f040006;
+        public static final int series=0x7f040007;
         public static final int series_title=0x7f040001;
     }
 }

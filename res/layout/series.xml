@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-android:background = "#00000F" android:orientation="vertical" android:layout_width="fill_parent" 
-android:layout_height="fill_parent" android:id="@+id/rootLayout">
-	<TextView
-	android:layout_width="wrap_content"  
-	android:layout_height="wrap_content" android:text="Series"
-	android:textSize="14px"
-	android:textStyle="bold"
-	android:textColor="#FFFFF0"
-	 />	
-	<ListView android:id="@+id/lvSeries" android:layout_weight = "8"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" 
-		android:scrollbarSize="4px"
-		android:layout_marginTop="35px" android:layout_marginBottom="10px" android:focusable = "true"
-		android:clickable = "true"
-		android:background = "#00000F"
-		android:cacheColorHint="#00000F"
-		
-	/>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:background = "#00000F" android:orientation="vertical" android:layout_width="match_parent" 
+	android:layout_height="fill_parent" android:id="@+id/rootLayout">
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+		android:gravity="center"
+		android:background = "#00000F" android:orientation="horizontal" android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+		<TextView
+		android:layout_width="wrap_content"  
+		android:layout_height="wrap_content" android:text="@string/series"
+		android:textSize="14px"
+		android:textStyle="bold"
+		android:textColor="#FFFFF0"
+		android:layout_weight="2"
+		 />
+		 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+			android:background = "#00000F" android:orientation="horizontal" android:layout_width="wrap_content"
+			android:layout_weight="8" android:gravity="right"
+			android:layout_height="wrap_content">
+		 	<Button  android:id="@+id/btnAdd" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/add_btn" android:onClick="addSerie"></Button>
+	    </LinearLayout>
+	</LinearLayout>
+	
+		<ListView android:id="@+id/lvSeries" android:layout_weight = "8"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" 
+			android:scrollbarSize="4px"
+			android:layout_marginTop="35px" android:layout_marginBottom="10px" android:focusable = "true"
+			android:clickable = "true"
+			android:background = "#00000F"
+			android:cacheColorHint="#00000F"
+			
+		/>
 	
 </LinearLayout>
