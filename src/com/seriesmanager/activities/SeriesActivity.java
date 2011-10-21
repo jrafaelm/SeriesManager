@@ -79,7 +79,10 @@ public class SeriesActivity extends Activity {
 		
 		listSeries();
 }	
-	
+	@Override
+	public void onBackPressed() {
+		moveTaskToBack(true);
+	}
 	
 	
 	

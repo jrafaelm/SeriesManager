@@ -8,4 +8,9 @@
     <string name="episode">Episode</string>
     <string name="season">Season</string>
     <string name="series">Series</string>
+    <string name="confirm">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="back_to_save">Press back to save.</string>
 </resources>

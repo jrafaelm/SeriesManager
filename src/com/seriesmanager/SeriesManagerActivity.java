@@ -3,7 +3,6 @@ package com.seriesmanager;
 
 import com.seriesmanager.activities.SeriesActivity;
 import com.seriesmanager.persistence.PScript;
-import com.seriesmanager.views.SerieDetailView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,9 +27,12 @@ public class SeriesManagerActivity extends Activity {
         persistence = new PScript(this);
         persistence.close();
         
-        Toast.makeText(this, "This application was developed by José Rafael Moraes", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, this.getResources().getString(R.string.credits), Toast.LENGTH_LONG).show();
         
     
+    }
+    @Override
+    public void onBackPressed() {
     }
     
     @Override

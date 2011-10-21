@@ -8,4 +8,9 @@
     <string name="episode">Episódio</string>
     <string name="season">Temporada</string>
     <string name="series">Séries</string>
+    <string name="confirm">Tem certeza?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="ok">Pressione a tecla voltar para salvar.</string>
+    <string name="back_to_save">Pressione a tecla voltar para salvar.</string>
 </resources>

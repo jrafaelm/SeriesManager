@@ -28,5 +28,6 @@
     <LinearLayout  android:gravity="center" android:layout_gravity="bottom" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
     	<Button  android:id="@+id/btnTrash" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/trash_btn" android:onClick="deleteSerie"></Button>
     </LinearLayout>
+    <TextView android:layout_gravity="center" android:text="@string/back_to_save"  android:id="@+id/tvSave" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize = "8dip"></TextView>
     
 </LinearLayout>
