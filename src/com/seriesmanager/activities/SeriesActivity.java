@@ -67,6 +67,8 @@ public class SeriesActivity extends Activity {
 
 		lvSeries = (ListView) findViewById(R.id.lvSeries);
 		lvSeries.setOnItemClickListener(ocl);
+
+		listSeries();
 	}
 	
 	/**
@@ -77,8 +79,9 @@ public class SeriesActivity extends Activity {
 	protected void onResume() {
 		
 		super.onResume();
+
+		adp.notifyDataSetChanged();
 		
-		listSeries();
 }	
 	@Override
 	public void onBackPressed() {

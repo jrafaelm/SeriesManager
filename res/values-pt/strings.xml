@@ -27,4 +27,7 @@
     <string name="last_update">Último Update: </string>
     <string name="actors">Atores: </string>
     <string name="runtime">Duração: </string>
+    <string name="share">Compartilhar </string>
+    <string name="share1">Eu assisti </string>
+    <string name="share2">. Compartilhado via Series Manager</string>
 </resources>

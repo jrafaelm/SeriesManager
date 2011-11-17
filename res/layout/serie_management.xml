@@ -147,6 +147,7 @@
     <LinearLayout  android:gravity="center"  android:layout_weight= "1" android:layout_gravity="bottom"  android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
     
     	<Button  android:id="@+id/btnTrash" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/trash_btn" android:onClick="deleteSerie"></Button>
+    	<Button  android:id="@+id/btnShare" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/share_btn" android:onClick="share"></Button>
     	<Button  android:id="@+id/btnSave" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/save_btn" android:onClick="saveChanges"></Button>
     	
     </LinearLayout>

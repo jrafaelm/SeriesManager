@@ -420,6 +420,17 @@ public class SeriesManagementActivity extends Activity {
 			}
 		}
 	}
+	public void share(View v){
+		Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+		sharingIntent.setType("text/plain");
+		String episode = getResources().getString(R.string.episode);
+		String season = getResources().getString(R.string.season);
+		String share = getResources().getString(R.string.share);
+		String share1 = getResources().getString(R.string.share1);
+		String share2 = getResources().getString(R.string.share2);
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, share1+" "+ serie.getTitle() +" "+ season+": "+serie.getSeason()+" "+ episode +": "+serie.getEpisode() + " "+ share2);
+		startActivity(Intent.createChooser(sharingIntent, share));
+	}
 	
 	private void openDialog(){
 		pd.setMessage(context.getString(R.string.data_update));
