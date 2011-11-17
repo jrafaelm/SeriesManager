@@ -1,19 +1,26 @@
 package com.seriesmanager;
 
 
+import java.io.File;
+
+
 import com.seriesmanager.activities.SeriesActivity;
 import com.seriesmanager.persistence.PScript;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 public class SeriesManagerActivity extends Activity {
-
+	public static final String SERIES_MANAGER_FOLDER = Environment
+	.getExternalStorageDirectory() + "/SeriesManager";
+	public static final String IMAGES_FOLDER = SERIES_MANAGER_FOLDER
+	+ "/Images";
 	//DB manipulation variables
 	
 	PScript persistence;
@@ -24,11 +31,15 @@ public class SeriesManagerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+        File diretorio1 = new File(SERIES_MANAGER_FOLDER);
+		diretorio1.mkdir();
+        File diretorio2 = new File(IMAGES_FOLDER);
+		diretorio2.mkdir();
+        
         persistence = new PScript(this);
         persistence.close();
         
-        Toast.makeText(this, this.getResources().getString(R.string.credits), Toast.LENGTH_LONG).show();
-        
+       
     
     }
     @Override

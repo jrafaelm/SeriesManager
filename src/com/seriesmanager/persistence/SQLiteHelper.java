@@ -10,34 +10,42 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	private static final String CATEGORY = "SeriesManager";
 	private String[] scriptSqlCreate;
 	private String[] scriptSqlDelete;
+	private String[] scriptSqlUpdate1;
 
-	public SQLiteHelper(Context context, String nomeBanco, int versaoBanco,
-			String[] scriptSQLCreate, String[] scriptSqlDelete) {
-		super(context, nomeBanco, null, versaoBanco);
-		// TODO Auto-generated constructor stub
-		this.scriptSqlCreate = scriptSQLCreate;
-		this.scriptSqlDelete = scriptSqlDelete;
-	}
-
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		// TODO Auto-generated method stub
-		Log.i(CATEGORY, "Banco Criado");
-		int qtdScripts = scriptSqlCreate.length;
-		for (int i = 0; i < qtdScripts; i++) {
-			String sql = scriptSqlCreate[i];
-			db.execSQL(sql);
+		public SQLiteHelper(Context context, String dbName, int dbVersion,
+				String[] scriptSQLCreate, String[] scriptSqlDelete, String[] scriptSqlUpdate1) {
+			super(context, dbName, null, dbVersion);
+			// TODO Auto-generated constructor stub
+			this.scriptSqlCreate = scriptSQLCreate;
+			this.scriptSqlDelete = scriptSqlDelete;
+			this.scriptSqlUpdate1 = scriptSqlUpdate1;
 		}
-	}
 
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int versaoAntiga, int versaoNova) {
-		// TODO Auto-generated method stub
-		int qtdScripts = scriptSqlDelete.length;
-		for (int i = 0; i < qtdScripts; i++) {
-			String sql = scriptSqlDelete[i];
-			db.execSQL(sql);
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+			// TODO Auto-generated method stub
+			Log.i(CATEGORY, "database Created");
+			int qtdScripts = scriptSqlCreate.length;
+			for (int i = 0; i < qtdScripts; i++) {
+				String sql = scriptSqlCreate[i];
+				db.execSQL(sql);
+				this.onUpgrade(db, 1, 0);
+			}
 		}
-		onCreate(db);
-	}
-}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			// TODO Auto-generated method stub
+			
+			switch (oldVersion) {
+			case 1:
+				int qtdScripts = scriptSqlUpdate1.length;
+				for (int i = 0; i < qtdScripts; i++) {
+					String sql = scriptSqlUpdate1[i];
+					db.execSQL(sql);
+				}
+
+			default:
+				break;
+			}
+		}}

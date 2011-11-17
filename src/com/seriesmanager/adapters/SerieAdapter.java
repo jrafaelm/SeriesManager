@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**Class to manipulate Series inside ListViews*/
@@ -55,20 +56,26 @@ public class SerieAdapter extends BaseAdapter{
 			      holder.txtTitle = (TextView)   
 			         convertView.findViewById(R.id.tvSerieTitle);  
 			      holder.txtDetail = (TextView)   
-			         convertView.findViewById(R.id.tvSerieDetail);  
+			         convertView.findViewById(R.id.tvSerieDetail); 
+			      holder.ivThumb = (ImageView)convertView.findViewById(R.id.ivCell);
 			      convertView.setTag(holder);  
 			   } else {  
 			      holder = (ViewHolder)convertView.getTag();  
 			   }  
-			   holder.txtTitle.setText(s.getName());  
-			   holder.txtDetail.setText(s.getSeason().toString() + " X "+ s.getEpisode());  
-			  
+			   holder.txtTitle.setText(s.getTitle());  
+			   holder.txtDetail.setText(s.getSeason().toString() + " X "+ s.getEpisode());
+			   if(s.getThumb()!= null){
+				   holder.ivThumb.setImageBitmap(s.getThumb());
+			   }else{
+				   holder.ivThumb.setImageDrawable(context.getResources().getDrawable(R.drawable.unknown_poster));
+			   }
 			   return convertView;  
 		}  
 			  
 			static class ViewHolder {  
 			   TextView txtTitle;  
-			   TextView txtDetail;  
+			   TextView txtDetail;
+			   ImageView ivThumb;
 			}  
 			
 

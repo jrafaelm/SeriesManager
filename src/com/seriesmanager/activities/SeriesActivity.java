@@ -46,7 +46,8 @@ public class SeriesActivity extends Activity {
 		public void onItemClick(AdapterView<?> arg0, View arg1,  int position, long id) {
 			if(lvSeries.getItemAtPosition(position)!=null){
 				clickedSerie =(Serie) lvSeries.getItemAtPosition(position);
-				Intent i = new Intent(ctx, SeriesDetailActivity.class);
+				clickedSerie.setThumb(null);
+				Intent i = new Intent(ctx, SeriesManagementActivity.class);
 //				Bundle extras = new Bundle();
 //				extras.putLong("idSerie", clickedSerie.getId());
 //				i.putExtras(extras);
@@ -100,7 +101,7 @@ public class SeriesActivity extends Activity {
 	
 	
 	public void addSerie(View v){
-		Intent i = new Intent(ctx, SeriesDetailActivity.class);
+		Intent i = new Intent(ctx, SeriesManagementActivity.class);
 		i.putExtra("serie", new Serie());
 		startActivity(i);
 	}

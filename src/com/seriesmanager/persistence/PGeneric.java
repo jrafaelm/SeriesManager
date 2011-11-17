@@ -34,4 +34,8 @@ public class PGeneric {
 		}
 	}
 	
+	public boolean isOpen(){
+		return db.isOpen();
+	}
+	
 }
