@@ -1,6 +1,7 @@
 package com.seriesmanager.activities;
 
 import java.io.InputStream;
+import java.io.ObjectOutputStream.PutField;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -51,6 +52,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SeriesManagementActivity extends Activity {
+
+	private static int RESULT_ADD = 3;
+	private static int RESULT_UPDATE = 4;
+	private static String URL_SM = "http://goo.gl/iyBGA";
 	private static String URL_POROMENOS = "http://imdbapi.poromenos.org/js/?name=";
 	private static String URL_DEANCLAT = "http://www.deanclatworthy.com/imdb/?q=";
 	private static String URL_IMDBAPI = "http://www.imdbapi.com/?t=";
@@ -127,11 +132,13 @@ public class SeriesManagementActivity extends Activity {
 			serie.setSeason(Integer.valueOf(etSeason.getText().toString()));
 			serie.setEpisode(Integer.valueOf(etEpisode.getText().toString()));
 			PSerie persistence = new PSerie(context);
-
+			int res = 0;
 			PEpisode persistenceEpi = new PEpisode(context);
 			if(serie.getId() != 0){
+				res = RESULT_UPDATE;
 				persistence.updateSerie(serie);
 			}else{
+				res = RESULT_ADD;
 				serie.setId(persistence.addSerie(serie));
 			}
 			if(persistenceEpi.searchFirstEpisode(serie).getId()!=0){
@@ -139,6 +146,9 @@ public class SeriesManagementActivity extends Activity {
 			}else{
 				persistenceEpi.addEpisodes(serie);
 			}
+			Intent i = new Intent();
+			i.putExtra("serie", serie);
+			setResult(res, i);
 			finish();
 		}
 	}
@@ -180,7 +190,6 @@ public class SeriesManagementActivity extends Activity {
 					new FindSeriesDetailsAsyncTask().execute(null);
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				if(pd.isShowing()){
 					pd.dismiss();
@@ -242,7 +251,6 @@ public class SeriesManagementActivity extends Activity {
 		    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		    spinner.setAdapter(adapter);
 		    spinner.setSelection(0);
-		    //TODO find this out
 		    spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 				@Override
@@ -264,7 +272,11 @@ public class SeriesManagementActivity extends Activity {
 				
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
-					serie.setTitle(spinnerChoice);
+					String title = spinnerChoice.substring(0, spinnerChoice.length()-6);
+					String year = spinnerChoice.substring(spinnerChoice.length()-6, spinnerChoice.length()-1);
+					serie.setTitle(title);
+					serie.setYear(year);
+					//TODO Continuar daqui.
 					openDialog();
 					new FindSeriesDetailsAsyncTask().execute(null);
 					
@@ -314,7 +326,7 @@ public class SeriesManagementActivity extends Activity {
 			if(searchMatches != null){
 				for(int i=0; i < searchMatches.length(); i++){
 					JSONObject show = searchMatches.getJSONObject(i);
-					shows.add(show.getString("name"));
+					shows.add(show.getString("name")+"("+show.getString("year")+")");
 				}
 				
 			}
@@ -428,7 +440,7 @@ public class SeriesManagementActivity extends Activity {
 		String share = getResources().getString(R.string.share);
 		String share1 = getResources().getString(R.string.share1);
 		String share2 = getResources().getString(R.string.share2);
-		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, share1+" "+ serie.getTitle() +" "+ season+": "+serie.getSeason()+" "+ episode +": "+serie.getEpisode() + " "+ share2);
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, share1+" "+ serie.getTitle() +" "+ season+": "+serie.getSeason()+" "+ episode +": "+serie.getEpisode() + " "+ share2 +" " + URL_SM);
 		startActivity(Intent.createChooser(sharingIntent, share));
 	}
 	

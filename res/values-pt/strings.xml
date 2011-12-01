@@ -7,7 +7,7 @@
     <string name="episode">Episódio</string>
     <string name="season">Temporada</string>
     <string name="series">Séries</string>
-    <string name="confirm">Tem certeza?</string>
+    <string name="confirm">Tem certeza em remover?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="back_to_save">Pressione a tecla voltar para salvar.</string>
@@ -29,5 +29,5 @@
     <string name="runtime">Duração: </string>
     <string name="share">Compartilhar </string>
     <string name="share1">Eu assisti </string>
-    <string name="share2">. Compartilhado via Series Manager</string>
+    <string name="share2">. Compartilhado via Series Manager disponível em: </string>
 </resources>

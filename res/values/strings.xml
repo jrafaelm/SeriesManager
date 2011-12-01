@@ -7,7 +7,7 @@
     <string name="episode">Episode</string>
     <string name="season">Season</string>
     <string name="series">Series</string>
-    <string name="confirm">Are you sure?</string>
+    <string name="confirm">Are you sure deleting it?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">OK</string>
@@ -29,5 +29,5 @@
     <string name="runtime">Runtime: </string>
     <string name="share">Share </string>
     <string name="share1">I watched </string>
-    <string name="share2">. Shared via Series Manager</string>
+    <string name="share2">. Shared via Series Manager available on: </string>
 </resources>

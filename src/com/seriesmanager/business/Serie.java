@@ -11,7 +11,7 @@ import com.seriesmanager.SeriesManagerActivity;
 import android.graphics.Bitmap;
 import android.provider.BaseColumns;
 
-public class Serie implements Serializable{
+public class Serie implements Serializable, Comparable<Serie>{
 	
 	/**
 	 * 
@@ -355,6 +355,11 @@ public class Serie implements Serializable{
 				this.getSeasonEpisodes().put(episode.getSeason(), episode.getNumber());
 			}
 		}
+	}
+
+	@Override
+	public int compareTo(Serie another) {
+		return this.title.compareTo(another.getTitle());
 	}
 	
 	

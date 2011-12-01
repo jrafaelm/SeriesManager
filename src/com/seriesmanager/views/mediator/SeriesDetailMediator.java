@@ -184,7 +184,10 @@ public class SeriesDetailMediator {
 			public void run() {
 				etSeason.setText(serie.getSeason().toString());
 				etEpisode.setText(serie.getEpisode().toString());
-				etTitle.setText(serie.getTitle());
+				if(serie.getTitle() != null && !serie.getTitle().equals(etTitle.getText().toString()))
+				{
+					etTitle.setText(serie.getTitle());
+				}
 				if( (serie.getSeasonEpisodes() == null || serie.getSeasonEpisodes().size() == 0) && (serie.getEpisodes()!= null && serie.getEpisodes().size()>0))
 				{
 					serie.setUpSeriesEpisodes();
