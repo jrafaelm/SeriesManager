@@ -275,7 +275,6 @@ public class SeriesManagementActivity extends Activity {
 					String year = spinnerChoice.substring(spinnerChoice.length()-5, spinnerChoice.length()-1);
 					serie.setTitle(title);
 					serie.setYear(year);
-					//TODO Continuar daqui.
 					openDialog();
 					new FindSeriesDetailsAsyncTask().execute(null);
 					
@@ -317,9 +316,10 @@ public class SeriesManagementActivity extends Activity {
 	}
 
 	private ArrayList<String> findMatchesFromPoromenos() throws MalformedURLException{
-		String seriesName = serie.getTitle().trim().replace(" ", "%20");
-		ArrayList<String> shows = Mjolnir.findMatch(seriesName);
+		
+		ArrayList<String> shows = Mjolnir.findMatch(serie.getTitle().trim());
 		if(shows.size() == 0){
+			String seriesName = serie.getTitle().trim().replace(" ", "%20");
 			URL url = new URL(URL_POROMENOS + "%25"+seriesName+"%25");
 			String json = MoviesJSON.getJSONdata(url);
 			try{
@@ -362,10 +362,12 @@ public class SeriesManagementActivity extends Activity {
 
 	private void parseURLimbdAPI() throws Exception {
 
-		String seriesName = serie.getTitle().trim().replace(" ", "%20");
-		String urlString = URL_IMDBAPI+ "%25"+seriesName+"%25";
+		String seriesName = serie.getTitle().trim().replace(" ", "+");
+		String urlString = null;
+		urlString = URL_IMDBAPI + "%25"+seriesName+"%25";			
+		
 		if(serie.getYear() != null && !serie.getYear().equals("")){
-			urlString = urlString + "%y="+serie.getYear();
+			urlString = urlString + "&y="+serie.getYear();
 		}
 		URL url = new URL(urlString);
 		

@@ -16,8 +16,6 @@ public class Mjolnir {
 		ArrayList<String> matches = new ArrayList<String>();
 		if(title.equalsIgnoreCase("House")){
 			matches.add("House M.D.(2004)");
-		}else if(title.equalsIgnoreCase("A Gifted Man")){
-			matches.add("A Gifted Man");
 		}else if(title.equalsIgnoreCase("V")){
 			matches.add("V(2009)");
 			matches.add("V(1984)");
