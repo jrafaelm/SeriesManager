@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import com.seriesmanager.R;
 import com.seriesmanager.business.Episode;
 import com.seriesmanager.business.Serie;
+import com.seriesmanager.connectivity.Mjolnir;
 import com.seriesmanager.connectivity.MoviesJSON;
 import com.seriesmanager.connectivity.Utils;
 import com.seriesmanager.persistence.PEpisode;
@@ -71,7 +72,6 @@ public class SeriesManagementActivity extends Activity {
 	EditText etTitle;
 	TextView tvReleased;
 	TextView tvPlot;
-	TextView tvImdb;
 	TextView tvRating;
 	TextView tvVotes;
 	TextView tvWriter;
@@ -104,7 +104,6 @@ public class SeriesManagementActivity extends Activity {
 		etTitle.setText(serie.getTitle());
 		tvReleased =(TextView) findViewById(R.id.tvReleased);
 		tvPlot =(TextView) findViewById(R.id.tvPlot);
-		tvImdb =(TextView) findViewById(R.id.tvImdbUrl);
 		tvRating =(TextView) findViewById(R.id.tvRating);
 		tvVotes =(TextView) findViewById(R.id.tvVotes);
 		tvWriter =(TextView) findViewById(R.id.tvWriter);
@@ -116,7 +115,7 @@ public class SeriesManagementActivity extends Activity {
 		tvEpisodeName =(TextView) findViewById(R.id.tvEpisodeName);
 		llDetails =(LinearLayout) findViewById(R.id.llDetails);
 		ivPoster =(ImageView) findViewById(R.id.ivPoster);
-		mediator = new SeriesDetailMediator(serie, btnPlusSeason, btnMinusSeason, btnPlusEpisode, btnMinusEpisode, etSeason, etEpisode, etTitle, tvReleased, tvPlot, tvImdb, tvRating, tvVotes, tvWriter, tvActors, tvGenres, tvRuntime, tvYear, tvLastUpdate, tvEpisodeName, llDetails, ivPoster);
+		mediator = new SeriesDetailMediator(serie, btnPlusSeason, btnMinusSeason, btnPlusEpisode, btnMinusEpisode, etSeason, etEpisode, etTitle, tvReleased, tvPlot, tvRating, tvVotes, tvWriter, tvActors, tvGenres, tvRuntime, tvYear, tvLastUpdate, tvEpisodeName, llDetails, ivPoster);
 		pd = new ProgressDialog(this);
 	}
 	
@@ -225,7 +224,7 @@ public class SeriesManagementActivity extends Activity {
 		try {
 			parseURLimbdAPI();
 			
-			parseURLDeanClat();
+//			parseURLDeanClat();
 			
 			parseURLPoromenos();
 			
@@ -273,7 +272,7 @@ public class SeriesManagementActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
 					String title = spinnerChoice.substring(0, spinnerChoice.length()-6);
-					String year = spinnerChoice.substring(spinnerChoice.length()-6, spinnerChoice.length()-1);
+					String year = spinnerChoice.substring(spinnerChoice.length()-5, spinnerChoice.length()-1);
 					serie.setTitle(title);
 					serie.setYear(year);
 					//TODO Continuar daqui.
@@ -289,7 +288,11 @@ public class SeriesManagementActivity extends Activity {
 	private void parseURLPoromenos() throws Exception {
 
 		String seriesName = serie.getTitle().trim().replace(" ", "%20");
-		URL url = new URL(URL_POROMENOS + seriesName);
+		String ulrString = URL_POROMENOS + seriesName;
+		if(serie.getYear() != null && ! serie.getYear().equals(""));{
+			ulrString = ulrString + "&year=" + serie.getYear();
+		}
+		URL url = new URL(ulrString);
 		String json = MoviesJSON.getJSONdata(url);
 		if(json != null){
 			JSONObject obj = new JSONObject(json);
@@ -315,31 +318,34 @@ public class SeriesManagementActivity extends Activity {
 
 	private ArrayList<String> findMatchesFromPoromenos() throws MalformedURLException{
 		String seriesName = serie.getTitle().trim().replace(" ", "%20");
-		URL url = new URL(URL_POROMENOS + "%25"+seriesName+"%25");
-		String json = MoviesJSON.getJSONdata(url);
-
-		ArrayList<String> shows = new ArrayList<String>();
-		try{
-		JSONObject obj = new JSONObject(json);
-		if(!obj.has("error")){
-			JSONArray searchMatches = obj.getJSONArray("shows");
-			if(searchMatches != null){
-				for(int i=0; i < searchMatches.length(); i++){
-					JSONObject show = searchMatches.getJSONObject(i);
-					shows.add(show.getString("name")+"("+show.getString("year")+")");
+		ArrayList<String> shows = Mjolnir.findMatch(seriesName);
+		if(shows.size() == 0){
+			URL url = new URL(URL_POROMENOS + "%25"+seriesName+"%25");
+			String json = MoviesJSON.getJSONdata(url);
+			try{
+			JSONObject obj = new JSONObject(json);
+			if(!obj.has("error")){
+				if(obj.has("shows")){
+					JSONArray searchMatches = obj.getJSONArray("shows");
+					if(searchMatches != null){
+						for(int i=0; i < searchMatches.length(); i++){
+							JSONObject show = searchMatches.getJSONObject(i);
+							shows.add(show.getString("name")+"("+show.getString("year")+")");
+						}
+					}
 				}
-				
+			}else{
+				Toast.makeText(this, obj.getString("error"),
+						Toast.LENGTH_LONG).show();
 			}
-		}else{
-			Toast.makeText(this, obj.getString("error"),
-					Toast.LENGTH_LONG).show();
-		}
-		}catch (Exception e) {
-			e.printStackTrace();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return shows;
 	}
 
+	@Deprecated
 	private void parseURLDeanClat() throws Exception {
 		URL url = new URL(URL_DEANCLAT + serie.getTitle());
 		String json = MoviesJSON.getJSONdata(url);
@@ -357,7 +363,11 @@ public class SeriesManagementActivity extends Activity {
 	private void parseURLimbdAPI() throws Exception {
 
 		String seriesName = serie.getTitle().trim().replace(" ", "%20");
-		URL url = new URL(URL_IMDBAPI+ "%25"+seriesName+"%25");
+		String urlString = URL_IMDBAPI+ "%25"+seriesName+"%25";
+		if(serie.getYear() != null && !serie.getYear().equals("")){
+			urlString = urlString + "%y="+serie.getYear();
+		}
+		URL url = new URL(urlString);
 		
 		String json = MoviesJSON.getJSONdata(url);
 		if(json != null){

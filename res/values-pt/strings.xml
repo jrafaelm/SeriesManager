@@ -10,13 +10,12 @@
     <string name="confirm">Tem certeza em remover?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
-    <string name="back_to_save">Pressione a tecla voltar para salvar.</string>
     <string name="did_you_mean">Você quis dizer?</string>
     <string name="network_problem">Problemas na rede, servidor indisponível.</string>
     <string name="data_update">Atualizando dados...</string>
     <string name="poster">Poster: </string>
     <string name="plot">Trama: </string>
-    <string name="imdb">IMDb: </string>
+    <string name="imdb">Essa app resgata informações de www.imdb.com</string>
     <string name="year">Ano: </string>
     <string name="rating">Nota: </string>
     <string name="votes">Votos: </string>

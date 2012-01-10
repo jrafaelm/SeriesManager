@@ -16,7 +16,7 @@
     <string name="data_update">Updating data...</string>
     <string name="poster">Poster: </string>
     <string name="plot">Plot: </string>
-    <string name="imdb">IMDb: </string>
+    <string name="imdb">This app get info from www.imdb.com </string>
     <string name="year">Year: </string>
     <string name="rating">Rating: </string>
     <string name="votes">Votes: </string>

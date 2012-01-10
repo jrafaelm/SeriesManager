@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
-    <LinearLayout android:gravity="center" android:background = "@drawable/stback" android:layout_width="match_parent" android:layout_height="54dip" android:orientation="horizontal">
+  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <LinearLayout android:gravity="center" android:background = "@drawable/stback" android:layout_width="fill_parent" android:layout_height="54dip" android:orientation="horizontal">
     
     	<EditText android:hint="@string/series_title" android:layout_weight = "8" android:id="@+id/etTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:inputType="text"></EditText>
 		<Button android:id="@+id/btnSearch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:onClick="searchSerie" android:background = "@drawable/globe_btn" ></Button>
@@ -10,15 +10,15 @@
     </LinearLayout>
     
     <ScrollView android:id="@+id/ScrollView01" android:layout_weight= "11"
-					android:layout_width="match_parent"
+					android:layout_width="fill_parent"
 					android:layout_height="wrap_content">
     
-    <LinearLayout android:gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" >
+    <LinearLayout android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" >
     
     	
 			<TextView android:layout_gravity="center" android:text="@string/season"  android:id="@+id/tvSeason" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 		    	
-		    <LinearLayout android:layout_weight="4" android:gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+		    <LinearLayout android:layout_weight="4" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
 		    
 		    	<Button android:id="@+id/btnMinusSeason" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background = "@drawable/gray_btn" android:text = "-"  android:textSize = "30dip" android:textStyle = "bold"></Button>
 		    	<EditText  android:id="@+id/etSeason" android:inputType="number" android:layout_width="80dip" android:layout_height="wrap_content" android:text="0"></EditText>
@@ -29,94 +29,87 @@
 			<TextView android:layout_gravity="center" android:text="@string/episode"  android:id="@+id/tvEpisode" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 		    
 			
-			<LinearLayout android:layout_weight="4" android:gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
+			<LinearLayout android:layout_weight="4" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" >
 		    
 		    	<Button android:id="@+id/btnMinusEpisode" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background = "@drawable/gray_btn" android:text = "-"  android:textSize = "30dip" android:textStyle = "bold"></Button>
 		    	<EditText  android:id="@+id/etEpisode" android:inputType="number" android:layout_width="80dip" android:layout_height="wrap_content" android:text="0" ></EditText>
 		    	<Button android:id="@+id/btnPlusEpisode" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background = "@drawable/gray_btn" android:text = "+"  android:textSize = "30dip" android:textStyle = "bold"></Button>
 		    	
 		    </LinearLayout>
-	    	<TextView android:layout_gravity="center" android:layout_weight="1" android:text="" android:textColor="#FFFFFF" android:textStyle="bold"  android:id="@+id/tvEpisodeName" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-	    
-	    <LinearLayout android:id="@+id/llDetails" android:visibility="visible" android:gravity="left" android:layout_gravity="bottom" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+	    	<LinearLayout android:gravity="center" android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" >
+		    		<TextView android:id="@+id/tvEpisodeName" android:layout_gravity="center" android:layout_weight="1" android:text="" android:textColor="#FFFFFF" android:textStyle="bold"   android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	    	</LinearLayout>
+	    <LinearLayout android:id="@+id/llDetails" android:visibility="visible" android:gravity="left" android:layout_gravity="bottom" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
 	    	
 		    	<LinearLayout android:id="@+id/llContentDetails"
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation="vertical">
 					<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "vertical">
 						<TextView android:layout_gravity="left" android:text="@string/poster" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    		<ImageView android:layout_gravity="left" android:id="@+id/ivPoster" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
 			    	</LinearLayout>
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">	
 			    		<TextView android:layout_gravity="left" android:text="@string/plot" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    		<TextView android:layout_gravity="left" android:text=""  android:id="@+id/tvPlot" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    	</LinearLayout>
 			    	<LinearLayout
-							  android:layout_width="match_parent"
-							  android:layout_height="wrap_content"
-							  android:orientation = "horizontal">
-							  
-						<TextView android:layout_gravity="left" android:text="@string/imdb" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-			    		<TextView android:layout_gravity="left" android:text="" android:inputType="textUri" android:id="@+id/tvImdbUrl" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-			    	</LinearLayout>
-			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">
 						<TextView android:layout_gravity="left" android:text="@string/released" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>	
 			    		<TextView android:layout_gravity="left" android:text=""  android:id="@+id/tvReleased" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    	</LinearLayout>
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">
 						<TextView android:layout_gravity="left" android:text="@string/genres" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>	
 			    		<TextView android:layout_gravity="left" android:text=""  android:id="@+id/tvGenres" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    	</LinearLayout>
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">
 						<TextView android:layout_gravity="left" android:text="@string/votes" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>	
 			    		<TextView android:layout_gravity="left" android:text=""  android:id="@+id/tvVotes" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    	</LinearLayout>
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">
 						<TextView android:layout_gravity="left" android:text="@string/rating" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>	
 						<TextView android:layout_gravity="left" android:text=""  android:id="@+id/tvRating" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    	</LinearLayout>
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">	
 						<TextView android:layout_gravity="left" android:text="@string/director" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    		<TextView android:layout_gravity="left" android:text=""  android:id="@+id/tvDirector" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    	</LinearLayout>
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">	
 						<TextView android:layout_gravity="left" android:text="@string/writer" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    		<TextView android:layout_gravity="left" android:text=""  android:id="@+id/tvWriter" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    	</LinearLayout>
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">
 						<TextView android:layout_gravity="left" android:text="@string/year" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>	
 			    		<TextView android:layout_gravity="left" android:text=""  android:id="@+id/tvYear" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    	</LinearLayout>
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">
 							  
@@ -125,7 +118,7 @@
 			    	
 					</LinearLayout>    
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">
 						<TextView android:layout_gravity="left" android:text="@string/runtime" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>	
@@ -133,18 +126,25 @@
 			    	
 					</LinearLayout>    
 			    	<LinearLayout
-							  android:layout_width="match_parent"
+							  android:layout_width="fill_parent"
 							  android:layout_height="wrap_content"
 							  android:orientation = "horizontal">	
 			    		<TextView android:layout_gravity="left" android:text="@string/last_update" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 			    		<TextView android:layout_gravity="left" android:text=""  android:id="@+id/tvLastUpdate" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 					</LinearLayout>
+					<LinearLayout
+							  android:layout_width="fill_parent"
+							  android:layout_height="wrap_content"
+							  android:orientation = "horizontal">
+						<TextView android:layout_gravity="left" android:text="@string/imdb"  android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+			    	</LinearLayout>
+			    	
 				</LinearLayout>  
 	    </LinearLayout>
 	    
     </LinearLayout>
     </ScrollView>
-    <LinearLayout  android:gravity="center"  android:layout_weight= "1" android:layout_gravity="bottom"  android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+    <LinearLayout  android:gravity="center"  android:layout_weight= "1" android:layout_gravity="bottom"  android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
     
     	<Button  android:id="@+id/btnTrash" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/trash_btn" android:onClick="deleteSerie"></Button>
     	<Button  android:id="@+id/btnShare" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/share_btn" android:onClick="share"></Button>

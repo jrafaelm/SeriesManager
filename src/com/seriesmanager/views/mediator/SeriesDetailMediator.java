@@ -28,7 +28,6 @@ public class SeriesDetailMediator {
 	private EditText etTitle;
 	private TextView tvReleased;
 	private TextView tvPlot;
-	private TextView tvImdb;
 	private TextView tvRating;
 	private TextView tvVotes;
 	private TextView tvWriter;
@@ -84,7 +83,7 @@ public class SeriesDetailMediator {
 			Button btnMinusSeason, Button btnPlusEpisode,
 			Button btnMinusEpisode, EditText etSeason, EditText etEpisode,
 			EditText etTitle, TextView tvReleased, TextView tvPlot,
-			TextView tvImdb, TextView tvRating, TextView tvVotes,
+			TextView tvRating, TextView tvVotes,
 			TextView tvWriter, TextView tvActors, TextView tvGenres,
 			TextView tvRuntime, TextView tvYear, TextView tvLastUpdate,
 			TextView tvEpisodeName, LinearLayout llDetails, ImageView ivPoster) {
@@ -99,7 +98,6 @@ public class SeriesDetailMediator {
 		this.etTitle = etTitle;
 		this.tvReleased = tvReleased;
 		this.tvPlot = tvPlot;
-		this.tvImdb = tvImdb;
 		this.tvRating = tvRating;
 		this.tvVotes = tvVotes;
 		this.tvWriter = tvWriter;
@@ -197,8 +195,8 @@ public class SeriesDetailMediator {
 					
 					tvReleased.setText(serie.getReleased());
 					tvPlot.setText(serie.getPlot()); 
-					tvImdb.setText(serie.getImdburl()); 
-					Linkify.addLinks(tvImdb, Linkify.WEB_URLS);
+//					tvImdb.setText(serie.getImdburl()); 
+//					Linkify.addLinks(tvImdb, Linkify.WEB_URLS);
 					tvRating.setText(serie.getRating());
 					tvVotes.setText(serie.getVotes()); 
 					tvWriter.setText(serie.getWriter());
