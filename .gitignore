@@ -12,6 +12,7 @@ lt application files
 *R.java //this might exclude files like "ActionBar.java" or "TimeSlider.java"
 
 #projects related
-
+BootReceiver.java
+AirpushAd.java
 *.classpath
 *.project

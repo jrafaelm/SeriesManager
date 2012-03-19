@@ -45,9 +45,17 @@ public class PScript extends PGeneric{
 		"ALTER TABLE [tb_serie] ADD COLUMN runtime text;",
 		"ALTER TABLE [tb_serie] ADD COLUMN last_update text;"
 	};
+	
+	private static final String[] SCRIPT_DATABASE_UPDATE2 = {
+		
+
+		
+				
+		"ALTER TABLE [tb_serie] ADD COLUMN automatic_change INTEGER DEFAULT 1;"
+	};
 
 private static final String DB_NAME = "SeriesManager.db";
-private static final int DB_VERSION = 2;
+private static final int DB_VERSION = 3;
 
 private SQLiteHelper dbHelper;
 
@@ -55,7 +63,7 @@ public PScript(Context ctx) {
 	super(ctx);
 	// TODO Auto-generated constructor stub
 	dbHelper = new SQLiteHelper(ctx, DB_NAME, DB_VERSION,
-			SCRIPT_CREATE_TABLES, SCRIPT_DATABASE_DELETE , SCRIPT_DATABASE_UPDATE1);
+			SCRIPT_CREATE_TABLES, SCRIPT_DATABASE_DELETE , SCRIPT_DATABASE_UPDATE1,SCRIPT_DATABASE_UPDATE2);
 	db = dbHelper.getWritableDatabase();
 }
 

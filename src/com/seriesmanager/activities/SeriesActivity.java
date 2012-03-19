@@ -7,10 +7,12 @@ import java.util.Collections;
 import com.seriesmanager.R;
 import com.seriesmanager.adapters.SerieAdapter;
 import com.seriesmanager.business.Serie;
+import com.seriesmanager.persistence.PEpisode;
 import com.seriesmanager.persistence.PSerie;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,7 +20,10 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,10 +43,14 @@ public class SeriesActivity extends Activity {
 	EditText input;
 	int visibleTop = 0;
 	int idVisiblePosition = 0;
+	long saveResult = -1;
+	boolean addFlag = true;
+	Context context = this;
 	private static final int RESULT_ADD = 3;
 	private static final int RESULT_UPDATE = 4;
 	// Menu items constants. 
 	public static final int MENU_ADD = 0;
+	private static final int RESULT_DELETE = 5;
 	
 	ArrayList<Serie> series = new ArrayList<Serie>();
 	Serie clickedSerie;
@@ -87,15 +96,17 @@ public class SeriesActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Serie updatedSerie;	
+		int index = -1;
 		switch (resultCode) {
 		case RESULT_ADD:
 			updatedSerie = (Serie) data.getSerializableExtra("serie");
 			reSetThumb(updatedSerie);
 			series.add(updatedSerie);
+			addFlag = true;
+			new SaveChangesAsyncTask().execute(updatedSerie);
 			break;
 		case RESULT_UPDATE:
 			updatedSerie = (Serie) data.getSerializableExtra("serie");
-			int index = -1;
 			for(Serie s : series){
 				index++;
 				if(s.getId() == updatedSerie.getId()){
@@ -107,11 +118,27 @@ public class SeriesActivity extends Activity {
 				reSetThumb(updatedSerie);
 				series.add(updatedSerie);
 			}
+			
+			addFlag = false;
+			new SaveChangesAsyncTask().execute(updatedSerie);
+			break;
+			
+		case RESULT_DELETE:
+			updatedSerie = (Serie) data.getSerializableExtra("serie");
+			for(Serie s : series){
+				index++;
+				if(s.getId() == updatedSerie.getId()){
+					break;
+				}
+			}
+			if( index > -1){
+				series.remove(index);
+			}
 			break;
 		
 		}
 		lvSeries.setSelectionFromTop(idVisiblePosition, visibleTop);
-		if(resultCode == RESULT_ADD || resultCode == RESULT_UPDATE){
+		if(resultCode == RESULT_ADD || resultCode == RESULT_UPDATE || resultCode == RESULT_DELETE){
 			updateView();
 		}else{
 			if(clickedSerie != null){
@@ -160,5 +187,66 @@ public class SeriesActivity extends Activity {
 		View v = lvSeries.getChildAt(0);
 		visibleTop = (v == null) ? 0 : v.getTop();
 
+	}
+	
+	
+	
+	private long save(Serie serie){
+		PSerie persistence = new PSerie(this);
+		PEpisode persistenceEpi = new PEpisode(this);
+		if(addFlag){
+			
+
+			persistenceEpi.addEpisodes(serie);
+			serie.setId(persistence.addSerie(serie));
+			return serie.getId();
+			
+		}else{
+			
+			if(persistenceEpi.searchFirstEpisode(serie).getId()!=0){
+				persistenceEpi.updateEpisodes(serie);
+			}else{
+				persistenceEpi.addEpisodes(serie);
+			}
+			persistence.updateSerie(serie);
+			return serie.getId();
+		}
+		
+		
+	}
+	
+	private class SaveChangesAsyncTask extends AsyncTask<Serie, Void, Long>{
+		
+		@Override
+		protected Long doInBackground(Serie... series) {
+			
+			Long saveResult = save(series[0]);
+			return saveResult;
+		}
+		
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			
+		}
+		
+		@Override
+		protected void onPostExecute(final Long result) {
+			super.onPostExecute(result);
+			if(result.longValue() == -1){
+
+				Looper.prepare();
+				Handler h = new Handler();
+				h.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						
+							Toast.makeText(context, context.getString(R.string.save_problem),Toast.LENGTH_LONG).show();
+						
+					}
+				});
+			}
+		}
 	}
 }

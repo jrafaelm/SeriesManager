@@ -27,6 +27,11 @@
     <string name="last_update">Last Update: </string>
     <string name="actors">Actors: </string>
     <string name="runtime">Runtime: </string>
+    <string name="automatic_change">Automatic increment</string>
+    <string name="automatic_change_warning">If the database is not right, consider switching Automatic increment off.</string>
+    <string name="last_season_episode">Last season/episode on database:</string>
+    <string name="saving_changes">Saving Changes... </string>
+    <string name="save_problem">Problems occured while trying to save.</string>
     <string name="share">Share </string>
     <string name="share1">I watched </string>
     <string name="share2">. Shared via Series Manager available on: </string>

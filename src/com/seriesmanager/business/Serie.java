@@ -37,7 +37,8 @@ public class Serie implements Serializable, Comparable<Serie>{
 		Series.WRITER, 
 		Series.ACTORS,
 		Series.RUNTIME,
-		Series.LAST_UPDATE
+		Series.LAST_UPDATE,
+		Series.AUTOMATIC_CHANGE
 	};
 
 	public static final class Series implements BaseColumns {
@@ -61,6 +62,7 @@ public class Serie implements Serializable, Comparable<Serie>{
 		public static final String ACTORS ="actors";
 		public static final String RUNTIME = "runtime";
 		public static final String LAST_UPDATE = "last_update";
+		public static final String AUTOMATIC_CHANGE = "automatic_change";
 		
 
 		
@@ -83,6 +85,7 @@ public class Serie implements Serializable, Comparable<Serie>{
 	private String writer;
 	private String actors;
 	private String runtime;
+	private boolean automaticChange;
 	private Date lastUpdate;
 	private Bitmap thumb;
 	private ArrayList<Episode> episodes;
@@ -98,6 +101,7 @@ public class Serie implements Serializable, Comparable<Serie>{
 	public Serie() {
 		season = Integer.valueOf(0);
 		episode = Integer.valueOf(0);
+		automaticChange = true;
 	}
 
 	
@@ -106,7 +110,7 @@ public class Serie implements Serializable, Comparable<Serie>{
 	public Serie(String title, Integer season, Integer episode, String rating,
 			String imdburl, String poster, String plot, String genres,
 			String votes, String year, long type, long id, String released,
-			String director, String writer, String actors, String runtime) {
+			String director, String writer, String actors, String runtime, boolean automaticChange) {
 		super();
 		this.title = title;
 		this.season = season;
@@ -125,6 +129,7 @@ public class Serie implements Serializable, Comparable<Serie>{
 		this.writer = writer;
 		this.actors = actors;
 		this.runtime = runtime;
+		this.automaticChange = automaticChange;
 		this.seasonEpisodes = new HashMap<Integer, Integer>();
 	}
 
@@ -161,6 +166,7 @@ public class Serie implements Serializable, Comparable<Serie>{
 		this.episodes = episodes;
 	}
 
+	
 	public String getReleased() {
 		return released;
 	}
@@ -195,6 +201,15 @@ public class Serie implements Serializable, Comparable<Serie>{
 
 	public String getRuntime() {
 		return runtime;
+	}
+
+	
+	public boolean hasAutomaticChange() {
+		return automaticChange;
+	}
+
+	public void setAutomaticChange(boolean automaticChange) {
+		this.automaticChange = automaticChange;
 	}
 
 	public void setRuntime(String runtime) {
@@ -356,10 +371,30 @@ public class Serie implements Serializable, Comparable<Serie>{
 			}
 		}
 	}
+	
+	public String getLastSeasonEpisode(){
+		String res = "";
+		if(this.seasonEpisodes != null){
+			Integer lastSeason = new Integer(0);
+			Integer lastEpisode = new Integer(0);
+			for(Integer i : seasonEpisodes.keySet()){
+				if(i > lastSeason){
+					lastSeason = i;
+				}
+			}
+			if(lastSeason.intValue() != 0){
+				lastEpisode = seasonEpisodes.get(lastSeason);
+			}
+			res = lastSeason.toString() +" x "+ lastEpisode.toString();
+		}
+		
+		return res;
+		
+	}
 
 	@Override
 	public int compareTo(Serie another) {
-		return this.title.compareTo(another.getTitle());
+		return this.title.compareToIgnoreCase(another.getTitle());
 	}
 	
 	

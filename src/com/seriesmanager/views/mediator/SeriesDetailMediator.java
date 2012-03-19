@@ -3,19 +3,20 @@ package com.seriesmanager.views.mediator;
 
 import java.util.HashMap;
 
-import com.seriesmanager.business.Serie;
-
 import android.graphics.BitmapFactory;
-import android.opengl.Visibility;
 import android.os.Handler;
-import android.text.util.Linkify;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.seriesmanager.business.Serie;
 
 public class SeriesDetailMediator {
 	private Serie serie;
@@ -37,6 +38,8 @@ public class SeriesDetailMediator {
 	private TextView tvYear;
 	private TextView tvLastUpdate;
 	private TextView tvEpisodeName;
+	private TextView tvLastSeasonEpisode;
+	private CheckBox cbAutomaticChange;
 	private LinearLayout llDetails;
 	private ImageView ivPoster;
 	
@@ -74,7 +77,18 @@ public class SeriesDetailMediator {
 		}
 	};
 	
-	
+	private OnCheckedChangeListener occlAutomaticChange = new OnCheckedChangeListener() {
+		
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			serie.setAutomaticChange(isChecked);
+			btnPlusSeason.setEnabled(true);
+			btnMinusSeason.setEnabled(true);
+			btnPlusEpisode.setEnabled(true);
+			btnMinusEpisode.setEnabled(true);
+			
+		}
+	};
 
 
 	
@@ -86,7 +100,8 @@ public class SeriesDetailMediator {
 			TextView tvRating, TextView tvVotes,
 			TextView tvWriter, TextView tvActors, TextView tvGenres,
 			TextView tvRuntime, TextView tvYear, TextView tvLastUpdate,
-			TextView tvEpisodeName, LinearLayout llDetails, ImageView ivPoster) {
+			TextView tvEpisodeName,TextView tvLastSeasonEpisode, LinearLayout llDetails, 
+			ImageView ivPoster, CheckBox cbAutomaticChange) {
 		super();
 		this.serie = serie;
 		this.btnPlusSeason = btnPlusSeason;
@@ -107,8 +122,10 @@ public class SeriesDetailMediator {
 		this.tvYear = tvYear;
 		this.tvLastUpdate = tvLastUpdate;
 		this.tvEpisodeName = tvEpisodeName;
+		this.tvLastSeasonEpisode = tvLastSeasonEpisode;
 		this.llDetails = llDetails;
 		this.ivPoster = ivPoster;
+		this.cbAutomaticChange = cbAutomaticChange;
 		initialConfig();
 	}
 
@@ -163,6 +180,8 @@ public class SeriesDetailMediator {
 		this.etEpisode = etEpisode;
 	}
 	
+	
+	
 	public void initialConfig(){
 		if(serie != null){
 			updateView();
@@ -171,6 +190,7 @@ public class SeriesDetailMediator {
 			btnMinusSeason.setOnClickListener(oclMinusSeason);
 			btnPlusEpisode.setOnClickListener(oclPlusEpisode);
 			btnMinusEpisode.setOnClickListener(oclMinusEpisode);
+			cbAutomaticChange.setOnCheckedChangeListener(occlAutomaticChange);
 		}
 	}
 	
@@ -206,7 +226,9 @@ public class SeriesDetailMediator {
 					tvYear.setText(serie.getYear());
 					tvLastUpdate.setText(serie.getlastUpdateFormated()); 
 					tvEpisodeName.setText(serie.getEpisodeName(serie.getSeason(),serie.getEpisode()));
+					tvLastSeasonEpisode.setText(serie.getLastSeasonEpisode());
 					llDetails.setVisibility(LinearLayout.VISIBLE);
+					cbAutomaticChange.setChecked(serie.hasAutomaticChange());
 					if(serie.getPosterUrl()!= null){
 						ivPoster.setImageBitmap(BitmapFactory.decodeFile(serie.getDefaultImageFileString()));
 					}
@@ -216,7 +238,7 @@ public class SeriesDetailMediator {
 			}
 
 			private void setUpButtons() {
-				if(serie.getSeasonEpisodes() != null && serie.getSeasonEpisodes().containsKey(serie.getSeason()) 
+				if( !cbAutomaticChange.isChecked() || (serie.getSeasonEpisodes() != null && serie.getSeasonEpisodes().containsKey(serie.getSeason())) 
 						&& (serie.getEpisode() <= serie.getSeasonEpisodes().get(serie.getSeason()))){
 					btnPlusSeason.setEnabled(true);
 					btnMinusSeason.setEnabled(true);
@@ -260,6 +282,12 @@ public class SeriesDetailMediator {
 	}
 	
 	private void loadView(){
+		if(this.etSeason.getText().toString().equals("")){
+			this.etSeason.setText("0");
+		}
+		if(this.etEpisode.getText().toString().equals("")){
+			this.etEpisode.setText("0");
+		}
 		if(Integer.valueOf(this.etSeason.getText().toString()) != serie.getSeason().intValue()){
 			serie.setSeason(Integer.valueOf(this.etSeason.getText().toString()));
 		}
@@ -285,26 +313,34 @@ public class SeriesDetailMediator {
 
 
 	private void setUpPLusButtons() {
-		if(serie.getEpisodes() != null && serie.getEpisodes().size()>0){
-			HashMap<Integer, Integer> seasonEpisodes = serie.getSeasonEpisodes();
-			if(seasonEpisodes.containsKey(serie.getSeason())){
-				if(seasonEpisodes.get(serie.getSeason()) !=null && serie.getEpisode() <= seasonEpisodes.get(serie.getSeason())){
-					tvEpisodeName.setText(serie.getEpisodeName(serie.getSeason(), serie.getEpisode()));
-				}else if(seasonEpisodes.containsKey(serie.getSeason()+1)){
-					serie.setSeason(serie.getSeason()+1);
-					serie.setEpisode(0);
-					etSeason.setText(serie.getSeason().toString());
-					etEpisode.setText("0");
-				}else{
-					serie.setSeason(serie.getSeason()+1);
-					serie.setEpisode(0);
-					etSeason.setText(serie.getSeason().toString());
-					etEpisode.setText("0");
-					btnPlusSeason.setEnabled(false);
-					btnPlusEpisode.setEnabled(false);
+			if(serie.getEpisodes() != null && serie.getEpisodes().size()>0){
+				HashMap<Integer, Integer> seasonEpisodes = serie.getSeasonEpisodes();
+				if(seasonEpisodes.containsKey(serie.getSeason())){
+					
+					if(seasonEpisodes.get(serie.getSeason()) !=null && serie.getEpisode() <= seasonEpisodes.get(serie.getSeason())){
+						tvEpisodeName.setText(serie.getEpisodeName(serie.getSeason(), serie.getEpisode()));
+					}else if(cbAutomaticChange.isChecked()){
+						
+						if(seasonEpisodes.containsKey(serie.getSeason()+1)){
+							serie.setSeason(serie.getSeason()+1);
+							serie.setEpisode(0);
+							etSeason.setText(serie.getSeason().toString());
+							etEpisode.setText("0");
+						}else{
+							serie.setSeason(serie.getSeason()+1);
+							serie.setEpisode(0);
+							etSeason.setText(serie.getSeason().toString());
+							etEpisode.setText("0");
+							btnPlusSeason.setEnabled(false);
+							btnPlusEpisode.setEnabled(false);
+						}
+						
+					}else{
+						etSeason.setText(serie.getSeason().toString());
+						etEpisode.setText(serie.getEpisode().toString());
+					}
 				}
 			}
-		}
 	}
 
 	

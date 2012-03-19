@@ -30,7 +30,8 @@ public class SeriesManagerActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
+        AirpushAd ad= new AirpushAd();
+        ad.advertisement(this);
         File diretorio1 = new File(SERIES_MANAGER_FOLDER);
 		diretorio1.mkdir();
         File diretorio2 = new File(IMAGES_FOLDER);
@@ -57,7 +58,7 @@ public class SeriesManagerActivity extends Activity {
 			public void run() {
 				start();
 			}
-		}, 3000);
+		}, 2000);
     	
     }
     

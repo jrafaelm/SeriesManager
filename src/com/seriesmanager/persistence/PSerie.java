@@ -57,6 +57,7 @@ public class PSerie extends PGeneric{
 			int idxActors =c.getColumnIndex(Series.ACTORS);
 			int idxRuntime =c.getColumnIndex(Series.RUNTIME);
 			int idxLastUpdate =c.getColumnIndex(Series.LAST_UPDATE);
+			int idxAutomaticChange =c.getColumnIndex(Series.AUTOMATIC_CHANGE);
 			
 			do {
 				
@@ -78,6 +79,7 @@ public class PSerie extends PGeneric{
 				serie.setWriter(c.getString(idxWriter));
 				serie.setActors(c.getString(idxActors));
 				serie.setRuntime(c.getString(idxRuntime));
+				serie.setAutomaticChange(c.getInt(idxAutomaticChange) == 0? false : true);
 
 				Bitmap image = BitmapFactory.decodeFile(serie.getDefaultImageFileString());
 				if(image != null){
@@ -131,6 +133,7 @@ public class PSerie extends PGeneric{
 			int idxActors =c.getColumnIndex(Series.ACTORS);
 			int idxRuntime =c.getColumnIndex(Series.RUNTIME);
 			int idxLastUpdate =c.getColumnIndex(Series.LAST_UPDATE);
+			int idxAutomaticChange =c.getColumnIndex(Series.AUTOMATIC_CHANGE);
 						
 				
 			do {
@@ -153,7 +156,7 @@ public class PSerie extends PGeneric{
 					serie.setWriter(c.getString(idxWriter));
 					serie.setActors(c.getString(idxActors));
 					serie.setRuntime(c.getString(idxRuntime));
-
+					serie.setAutomaticChange(c.getInt(idxAutomaticChange) == 0? false : true);
 					
 					try {
 
@@ -196,23 +199,23 @@ public class PSerie extends PGeneric{
 		try {
 			super.open();
 			ContentValues values = new ContentValues();
-			values.put("name", serie.getTitle());
-			values.put("season", serie.getSeason());
-			values.put("episode", serie.getEpisode());
-			values.put("imdburl",serie.getImdburl());
-			values.put("rating",serie.getRating());
-			values.put("poster",serie.getPosterUrl());
-			values.put("plot",serie.getPlot());
-			values.put("genres",serie.getGenres());
-			values.put("votes",serie.getVotes());
-			values.put("year",serie.getYear());
-			values.put("type",serie.getType());
-			values.put("released",serie.getReleased());
-			values.put("director",serie.getDirector());
-			values.put("writer",serie.getWriter());
-			values.put("actors",serie.getActors());
-			values.put("runtime",serie.getRuntime());
-			values.put("last_update",serie.getlastUpdateDB());
+			values.put(Series.NAME, serie.getTitle());
+			values.put(Series.SEASON, serie.getSeason());
+			values.put(Series.EPISODE, serie.getEpisode());
+			values.put(Series.RATING,serie.getRating());
+			values.put(Series.POSTER,serie.getPosterUrl());
+			values.put(Series.PLOT,serie.getPlot());
+			values.put(Series.GENRES,serie.getGenres());
+			values.put(Series.VOTES,serie.getVotes());
+			values.put(Series.YEAR,serie.getYear());
+			values.put(Series.TYPE,serie.getType());
+			values.put(Series.RELEASED,serie.getReleased());
+			values.put(Series.DIRECTOR,serie.getDirector());
+			values.put(Series.WRITER,serie.getWriter());
+			values.put(Series.ACTORS,serie.getActors());
+			values.put(Series.RUNTIME,serie.getRuntime());
+			values.put(Series.LAST_UPDATE,serie.getlastUpdateDB());
+			values.put(Series.AUTOMATIC_CHANGE,serie.hasAutomaticChange() ? 1 : 0);
 			return db.insert(TABLE_NAME, null, values);
 		} catch (SQLException e) {
 			Log.e("SeriesManager", "Error trying to include Serie:  "
@@ -229,23 +232,23 @@ public class PSerie extends PGeneric{
 			String where = "pk_id = " + serie.getId();
 			super.open();
 			ContentValues values = new ContentValues();
-			values.put("name", serie.getTitle());
-			values.put("season", serie.getSeason());
-			values.put("episode", serie.getEpisode());
-			values.put("imdburl",serie.getImdburl());
-			values.put("rating",serie.getRating());
-			values.put("poster",serie.getPosterUrl());
-			values.put("plot",serie.getPlot());
-			values.put("genres",serie.getGenres());
-			values.put("votes",serie.getVotes());
-			values.put("year",serie.getYear());
-			values.put("type",serie.getType());
-			values.put("released",serie.getReleased());
-			values.put("director",serie.getDirector());
-			values.put("writer",serie.getWriter());
-			values.put("actors",serie.getActors());
-			values.put("runtime",serie.getRuntime());
-			values.put("last_update",serie.getlastUpdateDB());
+			values.put(Series.NAME, serie.getTitle());
+			values.put(Series.SEASON, serie.getSeason());
+			values.put(Series.EPISODE, serie.getEpisode());
+			values.put(Series.RATING,serie.getRating());
+			values.put(Series.POSTER,serie.getPosterUrl());
+			values.put(Series.PLOT,serie.getPlot());
+			values.put(Series.GENRES,serie.getGenres());
+			values.put(Series.VOTES,serie.getVotes());
+			values.put(Series.YEAR,serie.getYear());
+			values.put(Series.TYPE,serie.getType());
+			values.put(Series.RELEASED,serie.getReleased());
+			values.put(Series.DIRECTOR,serie.getDirector());
+			values.put(Series.WRITER,serie.getWriter());
+			values.put(Series.ACTORS,serie.getActors());
+			values.put(Series.RUNTIME,serie.getRuntime());
+			values.put(Series.LAST_UPDATE,serie.getlastUpdateDB());
+			values.put(Series.AUTOMATIC_CHANGE,serie.hasAutomaticChange() ? 1 : 0);
 			
 			db.update(TABLE_NAME, values, where, null);
 		} catch (SQLException e) {

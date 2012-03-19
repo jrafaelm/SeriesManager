@@ -1,13 +1,10 @@
 package com.seriesmanager.persistence;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.seriesmanager.business.Episode;
 import com.seriesmanager.business.Serie;
 import com.seriesmanager.business.Episode.Episodes;
-import com.seriesmanager.business.Serie.Series;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -252,8 +249,11 @@ public class PEpisode extends PGeneric {
 				values.put("name", episode.getName());
 				values.put("season", episode.getSeason());
 				values.put("number", episode.getNumber());
-				
-				db.update(TABLE_NAME, values, where, null);
+				if(episode.getId() == 0){
+					db.insert(TABLE_NAME, null, values);
+				}else{
+					db.update(TABLE_NAME, values, where, null);
+				}
 			}
 		} catch (SQLException e) {
 			Log.e("SeriesManager", "Error trying to update Episodes:  "

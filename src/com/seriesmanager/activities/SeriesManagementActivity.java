@@ -1,30 +1,15 @@
 package com.seriesmanager.activities;
 
+import java.io.File;
 import java.io.InputStream;
-import java.io.ObjectOutputStream.PutField;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.seriesmanager.R;
-import com.seriesmanager.business.Episode;
-import com.seriesmanager.business.Serie;
-import com.seriesmanager.connectivity.Mjolnir;
-import com.seriesmanager.connectivity.MoviesJSON;
-import com.seriesmanager.connectivity.Utils;
-import com.seriesmanager.persistence.PEpisode;
-import com.seriesmanager.persistence.PSerie;
-import com.seriesmanager.views.mediator.SeriesDetailMediator;
 
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
@@ -36,30 +21,33 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.seriesmanager.R;
+import com.seriesmanager.business.Serie;
+import com.seriesmanager.connectivity.ServicesParser;
+import com.seriesmanager.connectivity.Utils;
+import com.seriesmanager.persistence.PEpisode;
+import com.seriesmanager.persistence.PSerie;
+import com.seriesmanager.views.mediator.SeriesDetailMediator;
 
 public class SeriesManagementActivity extends Activity {
 
 	private static int RESULT_ADD = 3;
 	private static int RESULT_UPDATE = 4;
+	private static int RESULT_DELETE = 5;
 	private static String URL_SM = "http://goo.gl/iyBGA";
-	private static String URL_POROMENOS = "http://imdbapi.poromenos.org/js/?name=";
-	private static String URL_DEANCLAT = "http://www.deanclatworthy.com/imdb/?q=";
-	private static String URL_IMDBAPI = "http://www.imdbapi.com/?t=";
 	
 	Intent starter;
 	Serie serie;
@@ -81,6 +69,8 @@ public class SeriesManagementActivity extends Activity {
 	TextView tvYear;
 	TextView tvLastUpdate;
 	TextView tvEpisodeName;
+	TextView tvLastSeasonEpisode;
+	CheckBox cbAutomaticChange;
 	LinearLayout llDetails;
 	ImageView ivPoster;
 	Context context = this;
@@ -112,10 +102,16 @@ public class SeriesManagementActivity extends Activity {
 		tvRuntime =(TextView) findViewById(R.id.tvRuntime);
 		tvYear =(TextView) findViewById(R.id.tvYear);
 		tvLastUpdate =(TextView) findViewById(R.id.tvLastUpdate);
+		tvLastSeasonEpisode =(TextView) findViewById(R.id.tvLastSeasonEpisode);
 		tvEpisodeName =(TextView) findViewById(R.id.tvEpisodeName);
 		llDetails =(LinearLayout) findViewById(R.id.llDetails);
 		ivPoster =(ImageView) findViewById(R.id.ivPoster);
-		mediator = new SeriesDetailMediator(serie, btnPlusSeason, btnMinusSeason, btnPlusEpisode, btnMinusEpisode, etSeason, etEpisode, etTitle, tvReleased, tvPlot, tvRating, tvVotes, tvWriter, tvActors, tvGenres, tvRuntime, tvYear, tvLastUpdate, tvEpisodeName, llDetails, ivPoster);
+		cbAutomaticChange = (CheckBox) findViewById(R.id.cbAutomaticChange);
+		mediator = new SeriesDetailMediator(serie, btnPlusSeason, btnMinusSeason, btnPlusEpisode, btnMinusEpisode, 
+				etSeason, etEpisode, etTitle, tvReleased, tvPlot, tvRating, tvVotes, 
+				tvWriter, tvActors, tvGenres, tvRuntime, tvYear, tvLastUpdate, tvEpisodeName,tvLastSeasonEpisode, 
+				llDetails, ivPoster, cbAutomaticChange);
+		
 		pd = new ProgressDialog(this);
 	}
 	
@@ -130,21 +126,14 @@ public class SeriesManagementActivity extends Activity {
 		}else{
 			serie.setSeason(Integer.valueOf(etSeason.getText().toString()));
 			serie.setEpisode(Integer.valueOf(etEpisode.getText().toString()));
-			PSerie persistence = new PSerie(context);
+			serie.setAutomaticChange(cbAutomaticChange.isChecked());
 			int res = 0;
-			PEpisode persistenceEpi = new PEpisode(context);
 			if(serie.getId() != 0){
 				res = RESULT_UPDATE;
-				persistence.updateSerie(serie);
 			}else{
 				res = RESULT_ADD;
-				serie.setId(persistence.addSerie(serie));
 			}
-			if(persistenceEpi.searchFirstEpisode(serie).getId()!=0){
-				persistenceEpi.updateEpisodes(serie);
-			}else{
-				persistenceEpi.addEpisodes(serie);
-			}
+			
 			Intent i = new Intent();
 			i.putExtra("serie", serie);
 			setResult(res, i);
@@ -161,7 +150,12 @@ public class SeriesManagementActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
 					PSerie persistence = new PSerie(context);
+					File image = new File(serie.getDefaultImageFileString());
+					image.delete();
 					persistence.excludeSerieBd(serie.getId());
+					Intent i = new Intent();
+					i.putExtra("serie", serie);
+					setResult(RESULT_DELETE, i);
 					finish();
 				}
 			});
@@ -183,7 +177,7 @@ public class SeriesManagementActivity extends Activity {
 			}
 			try {
 				if(!serie.getTitle().equals(etTitle.getText().toString()) || serie.getLastUpdate() == null){
-					confirmSerieTitle();
+					confirmSeriesTitle();
 				}else{
 					openDialog();
 					new FindSeriesDetailsAsyncTask().execute(null);
@@ -220,13 +214,13 @@ public class SeriesManagementActivity extends Activity {
 	}
 
 
-	public void runJSONParser() {
+	public void runServiceRequest() {
 		try {
-			parseURLimbdAPI();
+			ServicesParser.parseURLimbdAPI(serie);
 			
 //			parseURLDeanClat();
 			
-			parseURLPoromenos();
+			ServicesParser.parseURLPoromenos(serie);
 			
 			
 
@@ -236,9 +230,9 @@ public class SeriesManagementActivity extends Activity {
 		}
 	}
 
-	private void confirmSerieTitle() throws MalformedURLException,
+	private void confirmSeriesTitle() throws MalformedURLException,
 			JSONException {
-		final ArrayList<String> matches = findMatchesFromPoromenos();
+		final ArrayList<String> matches = ServicesParser.findMatchesFromPoromenos(serie, this);
 		if(matches.isEmpty()){
 			openDialog();
 			new FindSeriesDetailsAsyncTask().execute(null);
@@ -284,125 +278,7 @@ public class SeriesManagementActivity extends Activity {
 		}
 	}
 
-	private void parseURLPoromenos() throws Exception {
-
-		String seriesName = serie.getTitle().trim().replace(" ", "%20");
-		String ulrString = URL_POROMENOS + seriesName;
-		if(serie.getYear() != null && ! serie.getYear().equals(""));{
-			ulrString = ulrString + "&year=" + serie.getYear();
-		}
-		URL url = new URL(ulrString);
-		String json = MoviesJSON.getJSONdata(url);
-		if(json != null){
-			JSONObject obj = new JSONObject(json);
-			ArrayList<Episode> episodes = new ArrayList<Episode>();
-			if(!obj.has("error")){
-				
-				JSONArray episodesJSON = obj.getJSONObject(serie.getTitle()).getJSONArray("episodes");
-				if(episodes != null){
-					for(int i=0; i < episodesJSON.length(); i++){
-						JSONObject episodeJSON = episodesJSON.getJSONObject(i);
-						String name = episodeJSON.getString("name");
-						Integer season = episodeJSON.getInt("season");
-						Integer number = episodeJSON.getInt("number");
-						episodes.add(new Episode(season, number, name));
-					}
-					serie.setEpisodes(episodes);
-				}
-			}else{
-				throw new Exception("Problem occured parsing json");
-			}
-		}
-	}
-
-	private ArrayList<String> findMatchesFromPoromenos() throws MalformedURLException{
-		
-		ArrayList<String> shows = Mjolnir.findMatch(serie.getTitle().trim());
-		if(shows.size() == 0){
-			String seriesName = serie.getTitle().trim().replace(" ", "%20");
-			URL url = new URL(URL_POROMENOS + "%25"+seriesName+"%25");
-			String json = MoviesJSON.getJSONdata(url);
-			try{
-			JSONObject obj = new JSONObject(json);
-			if(!obj.has("error")){
-				if(obj.has("shows")){
-					JSONArray searchMatches = obj.getJSONArray("shows");
-					if(searchMatches != null){
-						for(int i=0; i < searchMatches.length(); i++){
-							JSONObject show = searchMatches.getJSONObject(i);
-							shows.add(show.getString("name")+"("+show.getString("year")+")");
-						}
-					}
-				}
-			}else{
-				Toast.makeText(this, obj.getString("error"),
-						Toast.LENGTH_LONG).show();
-			}
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return shows;
-	}
-
-	@Deprecated
-	private void parseURLDeanClat() throws Exception {
-		URL url = new URL(URL_DEANCLAT + serie.getTitle());
-		String json = MoviesJSON.getJSONdata(url);
-		if(json != null){
-			JSONObject obj = new JSONObject(json);
-			if(!obj.has("error")){
-				serie.setImdburl(obj.getString("imdburl"));
-			}else{
 	
-				throw new Exception("Problem occured while parsing json");
-			}
-		}
-	}
-
-	private void parseURLimbdAPI() throws Exception {
-
-		String seriesName = serie.getTitle().trim().replace(" ", "+");
-		String urlString = null;
-		urlString = URL_IMDBAPI + "%25"+seriesName+"%25";			
-		
-		if(serie.getYear() != null && !serie.getYear().equals("")){
-			urlString = urlString + "&y="+serie.getYear();
-		}
-		URL url = new URL(urlString);
-		
-		String json = MoviesJSON.getJSONdata(url);
-		if(json != null){
-			JSONObject obj = new JSONObject(json);
-			
-			if(!obj.has("error")){
-				seriesName = obj.getString("Title");
-				if(seriesName.equalsIgnoreCase(serie.getTitle())){
-					serie.setTitle(seriesName);
-				}else{
-					throw new Exception("Matching not found");
-				}
-				serie.setRating(obj.getString("Rating"));
-				serie.setGenres(obj.getString("Genre"));
-				serie.setVotes(obj.getString("Votes"));
-				serie.setPosterUrl(obj.getString("Poster"));
-				if(serie.getPosterUrl()!=null){
-					Utils.downloadImage(serie);
-				}
-				serie.setYear(obj.getString("Year"));
-				serie.setPlot(obj.getString("Plot"));
-				serie.setReleased(obj.getString("Released"));
-				serie.setDirector(obj.getString("Director"));
-				serie.setWriter(obj.getString("Writer"));
-				serie.setActors(obj.getString("Actors"));
-				serie.setRuntime(obj.getString("Runtime"));
-				serie.setLastUpdate(new Date());
-				
-			}else{
-				throw new Exception("Problem occured while parsing json");
-			}
-		}
-	}
 	
 	private class FindSeriesDetailsAsyncTask extends AsyncTask<Serie, Void, Serie>{
 		
@@ -411,7 +287,7 @@ public class SeriesManagementActivity extends Activity {
 		@Override
 		protected Serie doInBackground(Serie... series) {
 			
-			runJSONParser();
+			runServiceRequest();
 			return serie;
 		}
 		
