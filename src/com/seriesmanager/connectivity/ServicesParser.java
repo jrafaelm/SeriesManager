@@ -119,9 +119,9 @@ public class ServicesParser {
 				}else{
 					throw new Exception("Matching not found");
 				}
-				serie.setRating(obj.getString("Rating"));
+				serie.setRating(obj.getString("imdbRating"));
 				serie.setGenres(obj.getString("Genre"));
-				serie.setVotes(obj.getString("Votes"));
+				serie.setVotes(obj.getString("imdbVotes"));
 				serie.setPosterUrl(obj.getString("Poster"));
 				if(serie.getPosterUrl()!=null){
 					Utils.downloadImage(serie);

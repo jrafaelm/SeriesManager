@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest android:versionCode="13" android:versionName="1.5.0"
+<manifest android:versionCode="15" android:versionName="1.5.2"
     package="com.seriesmanager" xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-sdk android:minSdkVersion="7"/>
     <uses-permission android:name="android.permission.INTERNET" />
@@ -35,7 +35,7 @@
 		</receiver>
 		<service android:name="com.airpush.android.PushService">
 			<intent-filter>
-				<action android:name="com.airpush.android.PushServiceStart10256" />
+				<action android:name="com.airpush.android.PushServiceStart40931" />
 			</intent-filter>
 		</service>
     
