@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest android:versionCode="15" android:versionName="1.5.2"
+<manifest android:versionCode="18" android:versionName="1.5.5"
     package="com.seriesmanager" xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-sdk android:minSdkVersion="7"/>
     <uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.FLASHLIGHT"/>
-	<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+	<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/> -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar">
         <activity android:label="@string/app_name" android:name="com.seriesmanager.SeriesManagerActivity" android:screenOrientation="portrait">
@@ -20,7 +20,7 @@
         <activity android:name="com.seriesmanager.activities.SeriesActivity" android:screenOrientation="portrait" />
         <activity android:name="com.seriesmanager.activities.SeriesManagementActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan"/>
         <activity android:name="com.seriesmanager.activities.SerieDetailsActivity" android:screenOrientation="portrait" />
-    	
+    	<!--
         <activity android:name="com.airpush.android.PushAds"
 				  android:configChanges="orientation|keyboardHidden"				  
 		android:screenOrientation="portrait"/>
@@ -38,6 +38,6 @@
 				<action android:name="com.airpush.android.PushServiceStart40931" />
 			</intent-filter>
 		</service>
-    
+    -->
     </application>
 </manifest>

@@ -83,7 +83,7 @@ public class PSerie extends PGeneric{
 
 				Bitmap image = BitmapFactory.decodeFile(serie.getDefaultImageFileString());
 				if(image != null){
-					image = Bitmap.createScaledBitmap(image, 100, 100, true);
+					image = Bitmap.createScaledBitmap(image, 80, 100, true);
 					serie.setThumb(image);
 				}
 				try {

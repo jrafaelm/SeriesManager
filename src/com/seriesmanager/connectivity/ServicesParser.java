@@ -18,7 +18,7 @@ public class ServicesParser {
 
 	private static String URL_POROMENOS = "http://imdbapi.poromenos.org/js/?name=";
 	private static String URL_DEANCLAT = "http://www.deanclatworthy.com/imdb/?q=";
-	private static String URL_IMDBAPI = "http://www.imdbapi.com/?t=";
+	private static String URL_IMDBAPI = "http://www.omdbapi.com/?t=";
 	
 	public static void parseURLPoromenos(Serie serie) throws Exception {
 
